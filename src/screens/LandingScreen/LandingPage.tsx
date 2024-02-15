@@ -27,7 +27,7 @@ const MainScreen = ({imageUrl}: Props) => {
         source={imageUrl}
         blurRadius={1}>
         <View style={styles.headerContainer}>
-          <Logo />
+          <Logo size="small" />
           <LanguageLogo />
         </View>
         <Quotes />
