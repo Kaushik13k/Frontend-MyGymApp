@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import styles from './MainScreenButtonStyles';
 
 const MainScreenButton = ({navigation}) => {
-  // console.log(navigation);
   const [buttonOpacity] = useState(new Animated.Value(0));
 
   useEffect(() => {

@@ -25,14 +25,6 @@ const Logo: React.FC<Props> = ({size}) => {
         <Text style={logoTextStyle}>WORKOUT</Text>
       </View>
     </View>
-
-    // <View style={styles.headerLogo}>
-    // <View style={styles.logoIcon} />
-    // <View>
-    //   <Text style={styles.logoText}>MY</Text>
-    //   <Text style={styles.logoText}>WORKOUT</Text>
-    // </View>
-    // </View>
   );
 };
 

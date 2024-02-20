@@ -14,17 +14,9 @@ import MainScreenButton from '../../components/Button/MainScreenButton';
 import Quotes from '../../components/Quotes/Quotes';
 import Logo from '../../components/Logo/Logo';
 import LanguageLogo from '../../components/Logo/LanguageLogo';
-import {RootStackParamList} from '../../../App';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 type Props = {
   imageUrl: ImageSourcePropType;
-  //   buttonOpacity: Animated.Value;
 };
-
-// type LandingPageProps = NativeStackScreenProps<
-//   RootStackParamList,
-//   'SignupScreen'
-// >;
 
 const MainScreen = ({imageUrl}: Props) => {
   const navigation = useNavigation();

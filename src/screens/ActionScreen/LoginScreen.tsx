@@ -8,13 +8,15 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ActionButton from '../../components/Button/ActionButton';
 import styles from './CommonActionScreenStyles';
 import Logo from '../../components/Logo/Logo';
 import {ScreenEnum} from '../../utils/enums/ScreenEnum';
+import {GetAuthToken} from '../../services/Authentication';
+import {Login} from '../../services/Login';
 
 const {width, height} = Dimensions.get('window');
 
@@ -25,8 +27,9 @@ const LoginScreen = () => {
   const [borderBoxTranslateY] = useState(new Animated.Value(0));
   const [rememberMe, setRememberMe] = useState(false);
   const [loginDisabled, setLoginDisabled] = useState(false);
-  const [username, setUsername] = useState('');
+  const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // const [authToken, setAuthToken] = useState('');
 
   useEffect(() => {
     Animated.parallel([
@@ -47,37 +50,23 @@ const LoginScreen = () => {
     setRememberMe(!rememberMe);
     setLoginDisabled(!rememberMe);
   };
-  const url = '{}/entry_point';
-  const headers = {
-    'Content-Type': 'application/json',
-    'Operation-name': 'Token',
-  };
-  const data = {
-    query: `
-    query ($username: String!) { getToken(username: $username) }
-    `,
-    variables: {
-      username: username,
-    },
-    operation_name: 'Token',
-  };
 
-  const handleLogin = async () => {
+  const HandleLogin = async () => {
     try {
-      const response = await axios.post(url, data, {headers});
-      if (response && response.data) {
-        const userData = response.data.response.getToken;
-        const {token, username} = userData;
+      const authToken = await GetAuthToken(userName);
+      console.log('Token:', authToken);
+      if (authToken) {
+        const userDetails = await Login(userName, password, authToken);
+        if (userDetails) {
+          const {token, username, email} = userDetails;
 
-        Alert.alert('Login Passed', `Welcome ${username}`);
-      } else {
-        throw new Error('Invalid response from server');
+          await AsyncStorage.setItem('userData', JSON.stringify(userDetails));
+          Alert.alert('Login Passed', `Welcome ${username}`);
+        }
       }
-    } catch (error: any) {
-      console.error('Error:', error.message);
-
-      // Display a user-friendly error message
-      Alert.alert('Login Failed', 'Invalid username or password.');
+    } catch (error) {
+      console.error('Error getting auth token:', error);
+      Alert.alert('Login Failed', 'Please check your username or password');
     }
   };
 
@@ -107,7 +96,7 @@ const LoginScreen = () => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            value={username}
+            value={userName}
             placeholder="Username"
             onChangeText={setUsername}
           />
@@ -131,7 +120,7 @@ const LoginScreen = () => {
         <TouchableOpacity
           style={[styles.button, !rememberMe && styles.disabledButton]}
           disabled={!rememberMe}
-          onPress={handleLogin}>
+          onPress={HandleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </Animated.View>
