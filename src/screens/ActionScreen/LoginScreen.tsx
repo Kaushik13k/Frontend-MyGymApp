@@ -61,6 +61,7 @@ const LoginScreen = () => {
           const {token, username, email} = userDetails;
 
           await AsyncStorage.setItem('userData', JSON.stringify(userDetails));
+          navigation.navigate(ScreenEnum.HOME);
           Alert.alert('Login Passed', `Welcome ${username}`);
         }
       }
