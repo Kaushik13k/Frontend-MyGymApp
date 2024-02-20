@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './LogoStyle';
 
 interface Props {
-  buttonText: string;
+  size: string;
 }
 
 const Logo: React.FC<Props> = ({size}) => {

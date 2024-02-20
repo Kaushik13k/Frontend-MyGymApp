@@ -8,10 +8,12 @@ import LandingPage from './src/screens/LandingScreen/LandingPage';
 import LoginScreen from './src/screens/ActionScreen/LoginScreen';
 import SignupScreen from './src/screens/ActionScreen/SignupScreen';
 
+import {ScreenEnum} from './src/utils/enums/ScreenEnum';
+
 export type RootStackParamList = {
-  LandingPage: undefined;
-  LoginScreen: undefined;
-  SignupScreen: undefined;
+  [ScreenEnum.LANDING]: undefined;
+  [ScreenEnum.LOGIN]: undefined;
+  [ScreenEnum.SIGNUP]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,19 +22,19 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LandingPage">
+        <Stack.Navigator initialRouteName={ScreenEnum.LANDING}>
           <Stack.Screen
-            name="LandingPage"
+            name={ScreenEnum.LANDING}
             component={LandingPage}
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="LoginScreen"
+            name={ScreenEnum.LOGIN}
             component={LoginScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="SignupScreen"
+            name={ScreenEnum.SIGNUP}
             component={SignupScreen}
             options={{headerShown: false}}
           />

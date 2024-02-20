@@ -11,6 +11,7 @@ import ActionButton from '../../components/Button/ActionButton';
 import styles from './CommonActionScreenStyles';
 import Logo from '../../components/Logo/Logo';
 import {useNavigation} from '@react-navigation/native';
+import {ScreenEnum} from '../../utils/enums/ScreenEnum';
 
 const {width, height} = Dimensions.get('window');
 
@@ -54,12 +55,12 @@ const SignupScreen = () => {
         <View style={styles.buttonsContainer}>
           <ActionButton
             buttonText="Login"
-            buttonRef="LoginScreen"
+            buttonRef={ScreenEnum.LOGIN}
             navigation={navigation}
           />
           <ActionButton
             buttonText="Signup"
-            buttonRef="SignupScreen"
+            buttonRef={ScreenEnum.SIGNUP}
             navigation={navigation}
           />
         </View>

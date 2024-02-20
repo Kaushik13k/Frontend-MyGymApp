@@ -4,11 +4,11 @@ import styles from './ActionButtonStyle';
 
 interface Props {
   buttonText: string;
+  buttonRef: string;
+  navigation: any;
 }
 
 const ActionButton: React.FC<Props> = ({buttonText, buttonRef, navigation}) => {
-  console.log(buttonRef);
-  console.log(navigation);
   return (
     <TouchableOpacity
       style={styles.buttonAuth}
