@@ -10,10 +10,12 @@ import {
 import ActionButton from '../../components/Button/ActionButton';
 import styles from './CommonActionScreenStyles';
 import Logo from '../../components/Logo/Logo';
+import {useNavigation} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
-const LoginScreen = () => {
+const SignupScreen = () => {
+  const navigation = useNavigation();
   const [loginFormTranslateY] = useState(new Animated.Value(height));
   const [borderBoxTranslateY] = useState(new Animated.Value(0));
   const [rememberMe, setRememberMe] = useState(false);
@@ -50,8 +52,16 @@ const LoginScreen = () => {
           {transform: [{translateY: loginFormTranslateY}]},
         ]}>
         <View style={styles.buttonsContainer}>
-          <ActionButton buttonText="Login" />
-          <ActionButton buttonText="Signup" />
+          <ActionButton
+            buttonText="Login"
+            buttonRef="LoginScreen"
+            navigation={navigation}
+          />
+          <ActionButton
+            buttonText="Signup"
+            buttonRef="SignupScreen"
+            navigation={navigation}
+          />
         </View>
         <Text style={styles.title}>Signup</Text>
         <View style={styles.inputContainer}>
@@ -91,4 +101,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;

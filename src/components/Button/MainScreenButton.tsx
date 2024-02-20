@@ -1,13 +1,9 @@
 import {TouchableOpacity, Text, Animated} from 'react-native';
 import React, {useEffect, useState} from 'react';
-
 import styles from './MainScreenButtonStyles';
 
-// type Props = {
-//   buttonOpacity: Animated.Value;
-// };
-
-const MainScreenButton = () => {
+const MainScreenButton = ({navigation}) => {
+  // console.log(navigation);
   const [buttonOpacity] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -24,7 +20,7 @@ const MainScreenButton = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          console.log('Button Pressed');
+          navigation.navigate('LoginScreen');
         }}>
         <Text style={styles.buttonText}>Let's get started!</Text>
       </TouchableOpacity>
