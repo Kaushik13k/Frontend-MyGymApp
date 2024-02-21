@@ -1,8 +1,15 @@
 import {TouchableOpacity, Text, Animated} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import styles from './MainScreenButtonStyles';
+import {useNavigation} from '@react-navigation/native';
 
-const MainScreenButton = ({navigation}) => {
+interface MainScreenButtonProps {
+  navigationPage: string;
+}
+
+const MainScreenButton = ({navigationPage}: MainScreenButtonProps) => {
+  const navigation = useNavigation();
+
   const [buttonOpacity] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -12,14 +19,14 @@ const MainScreenButton = ({navigation}) => {
       delay: 1000,
       useNativeDriver: true,
     }).start();
-  }, []);
+  }, [buttonOpacity]);
 
   return (
     <Animated.View style={[styles.buttonContainer, {opacity: buttonOpacity}]}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate('LoginScreen');
+          navigation.navigate(navigationPage as never);
         }}>
         <Text style={styles.buttonText}>Let's get started!</Text>
       </TouchableOpacity>

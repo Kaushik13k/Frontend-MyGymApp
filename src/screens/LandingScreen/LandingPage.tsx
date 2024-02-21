@@ -2,11 +2,11 @@ import {
   View,
   ImageBackground,
   ImageSourcePropType,
-  SafeAreaView,
+  // SafeAreaView,
   //   Animated,
 } from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {ScreenEnum} from '../../utils/enums/ScreenEnum';
 
 import styles from './LandingPageStyles';
 import Footer from '../../components/Footer/Footer';
@@ -19,7 +19,6 @@ type Props = {
 };
 
 const MainScreen = ({imageUrl}: Props) => {
-  const navigation = useNavigation();
   return (
     <>
       <ImageBackground
@@ -31,7 +30,7 @@ const MainScreen = ({imageUrl}: Props) => {
           <LanguageLogo />
         </View>
         <Quotes />
-        <MainScreenButton navigation={navigation} />
+        <MainScreenButton navigationPage={ScreenEnum.LOGIN} />
       </ImageBackground>
       <Footer />
     </>

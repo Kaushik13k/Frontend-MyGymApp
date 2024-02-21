@@ -1,5 +1,7 @@
+import 'core-js/stable/atob';
+import {jwtDecode} from 'jwt-decode';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {Alert, SafeAreaView, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,7 +17,7 @@ export type RootStackParamList = {
   [ScreenEnum.LANDING]: undefined;
   [ScreenEnum.LOGIN]: undefined;
   [ScreenEnum.SIGNUP]: undefined;
-  [ScreenEnum.HOME]: undefined;
+  HomeScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,6 +30,20 @@ const App = () => {
     const checkLoginStatus = async () => {
       try {
         const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const ObjectData = JSON.parse(userData);
+          const decoded = jwtDecode(ObjectData.token);
+          if (decoded.exp && new Date(decoded.exp * 1000) > new Date()) {
+            setIsLoggedIn(true);
+          } else {
+            await AsyncStorage.removeItem('userData');
+            Alert.alert(
+              'Logged Out',
+              'You have been logged out as the token is expired.',
+            );
+          }
+        }
+
         if (userData) {
           setIsLoggedIn(true);
         }
@@ -48,20 +64,13 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={ScreenEnum.LANDING}>
-          {isLoggedIn ? (
-            <Stack.Screen
-              name={ScreenEnum.HOME}
-              component={HomeScreen}
-              options={{headerShown: false}}
-            />
-          ) : (
-            <Stack.Screen
-              name={ScreenEnum.LANDING}
-              component={LandingPage}
-              options={{headerShown: false}}
-            />
-          )}
+        <Stack.Navigator
+          initialRouteName={isLoggedIn ? ScreenEnum.HOME : ScreenEnum.LANDING}>
+          <Stack.Screen
+            name={ScreenEnum.LANDING}
+            component={LandingPage}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name={ScreenEnum.LOGIN}
             component={LoginScreen}
@@ -70,6 +79,11 @@ const App = () => {
           <Stack.Screen
             name={ScreenEnum.SIGNUP}
             component={SignupScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name={ScreenEnum.HOME}
+            component={HomeScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

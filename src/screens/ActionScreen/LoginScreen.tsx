@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import ActionButton from '../../components/Button/ActionButton';
 import styles from './CommonActionScreenStyles';
@@ -17,11 +18,13 @@ import Logo from '../../components/Logo/Logo';
 import {ScreenEnum} from '../../utils/enums/ScreenEnum';
 import {GetAuthToken} from '../../services/Authentication';
 import {Login} from '../../services/Login';
+import {RootStackParamList} from '../../../App';
 
 const {width, height} = Dimensions.get('window');
 
 const LoginScreen = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const [loginFormTranslateY] = useState(new Animated.Value(height));
   const [borderBoxTranslateY] = useState(new Animated.Value(0));
@@ -58,11 +61,11 @@ const LoginScreen = () => {
       if (authToken) {
         const userDetails = await Login(userName, password, authToken);
         if (userDetails) {
-          const {token, username, email} = userDetails;
+          // const {token, username, email} = userDetails;
 
           await AsyncStorage.setItem('userData', JSON.stringify(userDetails));
+          // Alert.alert('Login Passed', `Welcome ${username}`);
           navigation.navigate(ScreenEnum.HOME);
-          Alert.alert('Login Passed', `Welcome ${username}`);
         }
       }
     } catch (error) {

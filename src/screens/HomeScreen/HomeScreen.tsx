@@ -1,17 +1,18 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {Text, View, Button} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {ScreenEnum} from '../../utils/enums/ScreenEnum';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../../App';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const handleLogout = async () => {
     try {
-      // Remove user data from AsyncStorage
       await AsyncStorage.removeItem('userData');
-      // Navigate back to the login screen
       navigation.navigate(ScreenEnum.LOGIN);
     } catch (error) {
       console.error('Error logging out:', error);
@@ -27,5 +28,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});
