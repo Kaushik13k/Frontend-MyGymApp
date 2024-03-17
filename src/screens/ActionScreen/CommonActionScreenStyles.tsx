@@ -55,6 +55,9 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     width: '100%',
   },
+  error: {
+    borderColor: 'red',
+  },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',

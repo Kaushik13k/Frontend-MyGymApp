@@ -9,15 +9,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LandingPage from './src/screens/LandingScreen/LandingPage';
 import LoginScreen from './src/screens/ActionScreen/LoginScreen';
 import SignupScreen from './src/screens/ActionScreen/SignupScreen';
-import HomeScreen from './src/screens/HomeScreen/HomeScreen';
-
 import {ScreenEnum} from './src/utils/enums/ScreenEnum';
+import BottomTabNavigator from './src/screens/BottomTabNavigator';
 
 export type RootStackParamList = {
   [ScreenEnum.LANDING]: undefined;
   [ScreenEnum.LOGIN]: undefined;
   [ScreenEnum.SIGNUP]: undefined;
-  HomeScreen: undefined;
+  [ScreenEnum.HOME]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -34,6 +33,7 @@ const App = () => {
           const ObjectData = JSON.parse(userData);
           const decoded = jwtDecode(ObjectData.token);
           if (decoded.exp && new Date(decoded.exp * 1000) > new Date()) {
+            // * 1000 to convert to millisecond from 1970-01-01
             setIsLoggedIn(true);
           } else {
             await AsyncStorage.removeItem('userData');
@@ -81,9 +81,14 @@ const App = () => {
             component={SignupScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name={ScreenEnum.HOME}
             component={HomeScreen}
+            options={{headerShown: false}}
+          /> */}
+          <Stack.Screen
+            name={ScreenEnum.HOME}
+            component={BottomTabNavigator}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

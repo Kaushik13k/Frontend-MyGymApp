@@ -1,4 +1,5 @@
 import axios, {AxiosError} from 'axios';
+import Config from 'react-native-config';
 
 export const Login = async (
   username: string,
@@ -7,22 +8,23 @@ export const Login = async (
 ): Promise<Object> => {
   console.log('the user, passs, token is:');
   console.log(username, password, token);
-  const url = '{}/entry_point';
+  const url = `http://${Config.API_BASE_URL}/api/v1/authentication`;
+
   const headers = {
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
+    'Operation-Type': 'login',
   };
   const data = {
     query: `
-      query ($username: String!, $password: String!) {
-        getUser(username: $username, password: $password)
-      }
+        query ($login: Login!) { login(userInput: $login) { user { username, email }, token } }
     `,
     variables: {
-      username: username,
-      password: password,
+      login: {
+        username: username,
+        password: password,
+      },
     },
-    operation_name: 'Login',
   };
 
   try {
@@ -33,10 +35,11 @@ export const Login = async (
     if (
       response &&
       response.data &&
-      response.data.response &&
-      response.data.response.getUser
+      response.data.data.login &&
+      response.data.data.login.user &&
+      response.data.data.login.token
     ) {
-      const userData = response.data.response.getUser;
+      const userData = response.data.data.login;
       console.log(typeof userData);
       return userData;
     } else {
